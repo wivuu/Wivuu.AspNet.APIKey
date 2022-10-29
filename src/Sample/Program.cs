@@ -12,7 +12,7 @@ builder.Services
         options.DefaultAuthenticateScheme = "x-api-key";
         options.DefaultChallengeScheme = "x-api-key";
     })
-    .AddWivuuDataProtectedAPIKeySchema<MyDataKey>("x-api-key", options =>
+    .AddWivuuDataProtectedAPIKeySchema<DefaultUserIdKey<Guid>>("x-api-key", options =>
     {
         options.UsagePurpose = "x-api-key";
         options.CacheDurationSuccess = TimeSpan.FromSeconds(10);
@@ -20,7 +20,7 @@ builder.Services
         options.BuildAuthenticationResponseAsync = (services, key) =>
         {
             var ident = new ClaimsIdentity("x-api-key", ClaimTypes.NameIdentifier, ClaimTypes.Role);
-            ident.AddClaim(new Claim(ClaimTypes.NameIdentifier, key.userId));
+            ident.AddClaim(new Claim(ClaimTypes.NameIdentifier, key.UserId.ToString()));
 
             var principal = new ClaimsPrincipal();
             principal.AddIdentity(ident);

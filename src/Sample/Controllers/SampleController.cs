@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Wivuu.AspNetCore.APIKey;
 
 [ApiController]
 [Route("[controller]")]
@@ -18,10 +19,11 @@ public class SampleController : ControllerBase
     [HttpGet("GetNewKey", Name = "Unprotected")]
     public string GenerateApiKey(
         [FromServices] DataProtectedAPIKeyGenerator generator,
-        int? validMinutes = null, 
-        string userId = "123")
+        Guid? userId,
+        int? validMinutes = null
+    )
     {
-        var key = new MyDataKey(userId);
+        var key = new DefaultUserIdKey<Guid>(userId ?? Guid.NewGuid());
 
         if (validMinutes.HasValue)
         {
