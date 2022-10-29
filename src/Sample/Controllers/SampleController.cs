@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Wivuu.AspNetCore.APIKey;
 
 [ApiController]
 [Route("[controller]")]
@@ -10,7 +11,7 @@ public class SampleController : ControllerBase
     [Authorize(AuthenticationSchemes = "x-api-key")]
     public IActionResult Get()
     {
-        return Ok("Hello World!");
+        return Ok("Secret!");
     }
 
     [HttpGet("GetNewKey", Name = "Unprotected")]
@@ -18,7 +19,7 @@ public class SampleController : ControllerBase
         [FromServices] DataProtectedAPIKeyGenerator generator,
         int? validMinutes = null)
     {
-        var key = new SampleDataProtectionKey();
+        var key = new DefaultAPIKey();
 
         if (validMinutes.HasValue)
         {
