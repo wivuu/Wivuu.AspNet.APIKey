@@ -21,7 +21,7 @@ public class DataProtectedAPIKeyGenerator
     protected IDataProtectionProvider ProtectionProvider { get; }
     public IOptionsMonitor<DataProtectedAPIKeyGeneratorOptions> Options { get; }
 
-    public string ProtectKey(IDataProtectionKey key, TimeSpan timeSpan)
+    public string ProtectKey(IDataProtectedKey key, TimeSpan timeSpan)
     {
         var protector = ProtectionProvider
             .CreateProtector(Options.CurrentValue.UsagePurpose)
@@ -32,7 +32,7 @@ public class DataProtectedAPIKeyGenerator
         return Convert.ToBase64String(protectedBytes);
     }
 
-    public string ProtectKey(IDataProtectionKey key)
+    public string ProtectKey(IDataProtectedKey key)
     {
         var protector = ProtectionProvider
             .CreateProtector(Options.CurrentValue.UsagePurpose)
@@ -43,7 +43,7 @@ public class DataProtectedAPIKeyGenerator
         return Convert.ToBase64String(protectedBytes);
     }
 
-    public string ProtectKey(IDataProtectionKey key, DateTimeOffset expires)
+    public string ProtectKey(IDataProtectedKey key, DateTimeOffset expires)
     {
         var protector = ProtectionProvider
             .CreateProtector(Options.CurrentValue.UsagePurpose)

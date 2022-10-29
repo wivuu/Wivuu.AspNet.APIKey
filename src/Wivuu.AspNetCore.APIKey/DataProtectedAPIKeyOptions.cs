@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 namespace Wivuu.AspNetCore.APIKey;
 
 public class DataProtectedAPIKeyOptions<TDataProtectionKey> : AuthenticationSchemeOptions
-    where TDataProtectionKey : IDataProtectionKey
+    where TDataProtectionKey : IDataProtectedKey
 {
     /// <summary>
     /// Provides isolated purpose between different usages using the same key

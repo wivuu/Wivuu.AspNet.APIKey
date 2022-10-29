@@ -12,15 +12,18 @@ builder.Services
         options.DefaultAuthenticateScheme = "x-api-key";
         options.DefaultChallengeScheme = "x-api-key";
     })
-    .AddScheme<DataProtectedAPIKeyOptions<DefaultAPIKey>, DataProtectedAPIKeyHandler<DefaultAPIKey>>("x-api-key", options =>
+    .AddWivuuDataProtectedAPIKeySchema<MyDataKey>("x-api-key", options =>
     {
         options.UsagePurpose = "x-api-key";
         options.CacheDurationSuccess = TimeSpan.FromSeconds(10);
         options.CacheDurationFailure = TimeSpan.FromSeconds(1);
         options.BuildAuthenticationResponseAsync = (services, key) =>
         {
+            var ident = new ClaimsIdentity("x-api-key", ClaimTypes.NameIdentifier, ClaimTypes.Role);
+            ident.AddClaim(new Claim(ClaimTypes.NameIdentifier, key.userId));
+
             var principal = new ClaimsPrincipal();
-            principal.AddIdentity(new ClaimsIdentity("x-api-key"));
+            principal.AddIdentity(ident);
 
             var defaultTicket = new AuthenticationTicket(
                 principal,
@@ -67,3 +70,24 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public record struct MyDataKey(string userId) : IDataProtectedKey
+{
+    public static bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectedKey? key)
+    {
+        using var ms = new MemoryStream(tokenBytes);
+        using var br = new BinaryReader(ms);
+
+        key = new MyDataKey(br.ReadString());
+        return true;
+    }
+
+    public byte[] ToTokenBytes()
+    {
+        using var ms = new MemoryStream();
+        using var bw = new BinaryWriter(ms);
+
+        bw.Write(userId);
+        return ms.ToArray();
+    }
+}

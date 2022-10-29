@@ -13,7 +13,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Wivuu.AspNetCore.APIKey;
 
 public class DataProtectedAPIKeyHandler<TDataProtectionKey> : AuthenticationHandler<DataProtectedAPIKeyOptions<TDataProtectionKey>>
-    where TDataProtectionKey : IDataProtectionKey
+    where TDataProtectionKey : IDataProtectedKey
 {
     public DataProtectedAPIKeyHandler(
         IOptionsMonitor<DataProtectedAPIKeyOptions<TDataProtectionKey>> options, 

@@ -1,6 +1,6 @@
 namespace Wivuu.AspNetCore.APIKey;
 
-public interface IDataProtectionKey
+public interface IDataProtectedKey
 {
     /// <summary>
     /// Represent your API key as bytes
@@ -10,5 +10,5 @@ public interface IDataProtectionKey
     /// <summary>
     /// Deserialize your API key from bytes
     /// </summary>
-    static abstract bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectionKey? key);
+    static abstract bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectedKey? key);
 }

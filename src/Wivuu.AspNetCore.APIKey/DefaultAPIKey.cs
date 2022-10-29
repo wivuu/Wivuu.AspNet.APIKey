@@ -1,10 +1,10 @@
 namespace Wivuu.AspNetCore.APIKey;
 
-public struct DefaultAPIKey : IDataProtectionKey
+public struct DefaultAPIKey : IDataProtectedKey
 {
     static readonly byte[] BytePayload = new byte[] { 0x01 };
 
-    public static bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectionKey? key)
+    public static bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectedKey? key)
     {
         if (tokenBytes[0] == 0x01)
         {
