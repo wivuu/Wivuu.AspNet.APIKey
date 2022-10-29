@@ -16,10 +16,17 @@ public class SampleController : ControllerBase
     [HttpGet("GetNewKey", Name = "Unprotected")]
     public string GenerateApiKey(
         [FromServices] DataProtectedAPIKeyGenerator generator,
-        int validMinutes = 5)
+        int? validMinutes = null)
     {
         var key = new SampleDataProtectionKey();
 
-        return generator.ProtectKey(key, TimeSpan.FromMinutes(validMinutes));
+        if (validMinutes.HasValue)
+        {
+            return generator.ProtectKey(key, TimeSpan.FromMinutes(validMinutes.Value));
+        }
+        else
+        {
+            return generator.ProtectKey(key);
+        }
     }
 }
