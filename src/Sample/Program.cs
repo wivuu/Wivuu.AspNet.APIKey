@@ -22,15 +22,10 @@ builder.Services
             var ident = new ClaimsIdentity("x-api-key", ClaimTypes.NameIdentifier, ClaimTypes.Role);
             ident.AddClaim(new Claim(ClaimTypes.NameIdentifier, key.UserId.ToString()));
 
-            var principal = new ClaimsPrincipal();
-            principal.AddIdentity(ident);
+            var principal = new ClaimsPrincipal(ident);
+            var ticket    = new AuthenticationTicket(principal, "x-api-key");
 
-            var defaultTicket = new AuthenticationTicket(
-                principal,
-                new AuthenticationProperties(),
-                "x-api-key");
-
-            return Task.FromResult(AuthenticateResult.Success(defaultTicket));
+            return Task.FromResult(AuthenticateResult.Success(ticket));
         };
     });
 
