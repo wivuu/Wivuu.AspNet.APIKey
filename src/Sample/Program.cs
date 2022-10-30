@@ -70,24 +70,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-public record struct MyDataKey(string userId) : IDataProtectedKey
-{
-    public static bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectedKey? key)
-    {
-        using var ms = new MemoryStream(tokenBytes);
-        using var br = new BinaryReader(ms);
-
-        key = new MyDataKey(br.ReadString());
-        return true;
-    }
-
-    public byte[] ToTokenBytes()
-    {
-        using var ms = new MemoryStream();
-        using var bw = new BinaryWriter(ms);
-
-        bw.Write(userId);
-        return ms.ToArray();
-    }
-}

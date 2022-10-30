@@ -21,9 +21,13 @@ public static class DataProtectedAPIKeyExtensions
         string? displayName = null)
         where TDataProtectionKey : IDataProtectedKey
     {
-        return builder.AddScheme<DataProtectedAPIKeyOptions<TDataProtectionKey>, DataProtectedAPIKeyHandler<TDataProtectionKey>>(
+        return builder.AddScheme<
+            DataProtectedAPIKeyOptions<TDataProtectionKey>, 
+            DataProtectedAPIKeyHandler<TDataProtectionKey>
+        >(
             authenticationScheme, 
             displayName, 
-            configureOptions);
+            configureOptions
+        );
     }
 }
