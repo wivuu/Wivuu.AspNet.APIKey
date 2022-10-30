@@ -55,34 +55,38 @@ builder.Services.AddLogging();
 builder.Services.AddOptions();
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen(options => {
-    // Include XML comments
-    options.IncludeXmlComments(
-        Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
-    );
-
-    // Enable auth w/ swagger UI
-    var authScheme = new OpenApiSecurityScheme()
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerGen(options => 
     {
-        In           = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Type         = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Name         = "Authorization",
-        Scheme       = "Bearer",
-        BearerFormat = "x-api-key",
-        Reference = new ()
+        // Include XML comments
+        options.IncludeXmlComments(
+            Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
+        );
+
+        // Enable auth w/ swagger UI
+        var authScheme = new OpenApiSecurityScheme()
         {
-            Type = ReferenceType.SecurityScheme,
-            Id   = "Bearer",
-        }
-    };
+            In           = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Type         = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Name         = "Authorization",
+            Scheme       = "Bearer",
+            BearerFormat = "x-api-key",
+            Reference = new ()
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id   = "Bearer",
+            }
+        };
 
-    options.AddSecurityDefinition("Bearer", authScheme);
+        options.AddSecurityDefinition("Bearer", authScheme);
 
-    options.AddSecurityRequirement(new ()
-    {
-        [authScheme] = Array.Empty<string>(),
+        options.AddSecurityRequirement(new ()
+        {
+            [authScheme] = Array.Empty<string>(),
+        });
     });
-});
+}
 
 var app = builder.Build();
 

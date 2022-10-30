@@ -6,4 +6,6 @@ This project implements a secure API key authentication & authorization system b
 - [x] Update sample to support Swagger doc authentication
 - [x] Add option mechanism for extracting API key differently from request
 - [ ] Add tests
+- [ ] Add Sonarcloud CI actions
 - [ ] Document usage scenarios
+- [ ] Add CD to nuget
