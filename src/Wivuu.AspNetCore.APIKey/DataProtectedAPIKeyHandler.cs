@@ -41,7 +41,8 @@ public class DataProtectedAPIKeyHandler<TDataProtectionKey> : AuthenticationHand
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         // Retrieve the token from the request header
-        if (GetKeyFromRequest(Context.Request) is not { } protectedValue)
+        var getKey = Options.GetKeyFromRequest ?? GetKeyFromRequest;
+        if (getKey(Context.Request) is not { } protectedValue)
             return Task.FromResult(AuthenticateResult.Fail("No key provided"));
 
         // Get cache

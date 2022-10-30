@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -17,6 +18,15 @@ builder.Services
         options.UsagePurpose = "x-api-key";
         options.CacheDurationSuccess = TimeSpan.FromSeconds(10);
         options.CacheDurationFailure = TimeSpan.FromSeconds(1);
+        options.GetKeyFromRequest = (req) =>
+        {
+            // Retrieve the token from bearer token
+            if (AuthenticationHeaderValue.TryParse(req.Headers.Authorization, out var authHeader) &&
+                string.Equals(authHeader.Scheme, "Bearer", StringComparison.OrdinalIgnoreCase))
+                return authHeader.Parameter;
+
+            return null;
+        };
         options.BuildAuthenticationResponseAsync = (services, key) =>
         {
             var ident = new ClaimsIdentity("x-api-key", ClaimTypes.NameIdentifier, ClaimTypes.Role);

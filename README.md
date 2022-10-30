@@ -4,6 +4,6 @@ This project implements a secure API key authentication & authorization system b
 
 ## Roadmap
 - [ ] Update sample to support Swagger doc authentication
-- [ ] Add option mechanism for extracting API key differently from request
+- [x] Add option mechanism for extracting API key differently from request
 - [ ] Add tests
 - [ ] Document usage scenarios

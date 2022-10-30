@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace Wivuu.AspNetCore.APIKey;
 
@@ -26,4 +27,9 @@ public class DataProtectedAPIKeyOptions<TDataProtectionKey> : AuthenticationSche
     /// If not provided, a default authenticated principal will be generated
     /// </summary>
     public Func<IServiceProvider, TDataProtectionKey, Task<AuthenticateResult>>? BuildAuthenticationResponseAsync { get; set; } = null;
+
+    /// <summary>
+    /// Implement to provide mechanism for retrieving the key from the request
+    /// </summary>
+    public Func<HttpRequest, string?>? GetKeyFromRequest { get; set; } = null;
 }
