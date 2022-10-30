@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
 using Wivuu.AspNetCore.APIKey;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +60,28 @@ builder.Services.AddSwaggerGen(options => {
     options.IncludeXmlComments(
         Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml")
     );
+
+    // Enable auth w/ swagger UI
+    var authScheme = new OpenApiSecurityScheme()
+    {
+        In           = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type         = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Name         = "Authorization",
+        Scheme       = "Bearer",
+        BearerFormat = "x-api-key",
+        Reference = new ()
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id   = "Bearer",
+        }
+    };
+
+    options.AddSecurityDefinition("Bearer", authScheme);
+
+    options.AddSecurityRequirement(new ()
+    {
+        [authScheme] = Array.Empty<string>(),
+    });
 });
 
 var app = builder.Build();
