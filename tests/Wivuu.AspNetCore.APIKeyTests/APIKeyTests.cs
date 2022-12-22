@@ -41,4 +41,13 @@ public class APIKeyTests : BaseTests
         Assert.False(parsed, "Parsed token bytes when it should have failed");
         Assert.Null(newKeyParsed);
     }
+
+    [Fact]
+    public void TestProtectKey()
+    {
+        var generator = Services.GetRequiredService<DataProtectedAPIKeyGenerator>();
+
+        var key = generator.ProtectKey(new DefaultUserIdKey<Guid>(Guid.NewGuid()), TimeSpan.FromSeconds(1));
+        Assert.NotNull(key);
+    }
 }

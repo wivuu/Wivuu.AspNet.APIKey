@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
-using Wivuu.AspNetCore.APIKey;
+
+namespace Wivuu.AspNetCore.APIKey;
 
 public class DataProtectedAPIKeyGeneratorOptions
 {
