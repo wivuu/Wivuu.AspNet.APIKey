@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Wivuu.AspNetCore.APIKey;
 
-public record struct DefaultUserIdKey<T>(T UserId) : IDataProtectedKey
+public readonly record struct DefaultUserIdKey<T>(T UserId) : IDataProtectedKey
     where T : IParsable<T>
 {
     public static bool TryParseTokenBytes(byte[] tokenBytes, out IDataProtectedKey? key)
