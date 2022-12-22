@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text.Encodings.Web;
@@ -8,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Wivuu.AspNetCore.APIKey;
 
@@ -75,48 +75,47 @@ public class DataProtectedAPIKeyHandler<TDataProtectionKey> : AuthenticationHand
                 return Task.FromResult(AuthenticateResult.Fail("Invalid key"));
         }
 
-        // Unprotect the token and retrieve underlying structured key
-        bool TryGetDataProtectionKeyFromValue(string value, [NotNullWhen(true)] out TDataProtectionKey? result)
+    }
+
+    // Unprotect the token and retrieve underlying structured key
+    private bool TryGetDataProtectionKeyFromValue(string value, [NotNullWhen(true)] out TDataProtectionKey? result)
+    {
+        var protectionProvider = Context.RequestServices.GetRequiredService<IDataProtectionProvider>();
+        var protector = protectionProvider.CreateProtector(Options.UsagePurpose).ToTimeLimitedDataProtector();
+
+        try
         {
-            var protectionProvider = Context.RequestServices.GetRequiredService<IDataProtectionProvider>();
-            var protector = protectionProvider.CreateProtector(Options.UsagePurpose).ToTimeLimitedDataProtector();
+            var protectedBytes   = Convert.FromBase64String(value);
+            var unprotectedValue = protector.Unprotect(protectedBytes);
 
-            try
+            if (TDataProtectionKey.TryParseTokenBytes(unprotectedValue, out var key) &&
+                key is TDataProtectionKey dataProtectionKey)
             {
-                var protectedBytes   = Convert.FromBase64String(value);
-                var unprotectedValue = protector.Unprotect(protectedBytes);
-
-                if (TDataProtectionKey.TryParseTokenBytes(unprotectedValue, out var key) &&
-                    key is TDataProtectionKey dataProtectionKey)
-                {
-                    result = dataProtectionKey;
-                    return true;
-                }
-
-                result = default;
-                return false;
+                result = dataProtectionKey;
+                return true;
             }
-            catch (CryptographicException)
-            {
-                result = default;
-                return false;
-            }
+
+            result = default;
+            return false;
         }
-
-        // Provide option to validate key
-        Task<AuthenticateResult> ValidateKeyAsync(TDataProtectionKey key)
+        catch (CryptographicException)
         {
-            // Validate the key
-            if (Options.BuildAuthenticationResponseAsync is not null)
-                return Options.BuildAuthenticationResponseAsync(Context.RequestServices, key);
-
-            var identity = new ClaimsIdentity("x-api-key");
-
-            var defaultTicket = new AuthenticationTicket(
-                new ClaimsPrincipal(identity), 
-                "x-api-key");
-
-            return Task.FromResult(AuthenticateResult.Success(defaultTicket));
+            result = default;
+            return false;
         }
+    }
+
+    // Provide option to validate key
+    private Task<AuthenticateResult> ValidateKeyAsync(TDataProtectionKey key)
+    {
+        // Validate the key
+        if (Options.BuildAuthenticationResponseAsync is not null)
+            return Options.BuildAuthenticationResponseAsync(Context.RequestServices, key);
+
+        var identity = new ClaimsIdentity("x-api-key");
+
+        var defaultTicket = new AuthenticationTicket(new ClaimsPrincipal(identity), "x-api-key");
+
+        return Task.FromResult(AuthenticateResult.Success(defaultTicket));
     }
 }

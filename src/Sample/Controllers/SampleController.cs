@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wivuu.AspNetCore.APIKey;
 
+namespace Sample.Controllers;
+
 [ApiController]
 [Route("[controller]")]
 public class SampleController : ControllerBase
