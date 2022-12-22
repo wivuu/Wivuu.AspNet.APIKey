@@ -105,5 +105,5 @@ app.Run();
 
 namespace Sample
 {
-    public partial class Program { }
+    public sealed partial class Program { }
 }
