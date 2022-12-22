@@ -92,10 +92,6 @@ public class DefaultsAPITests : BaseTests
             var response = await HttpClient.GetAsync("/Sample");
 
             // Assert
-            if (!response.IsSuccessStatusCode)
-            {
-                var rsponseBody = await response.Content.ReadAsStringAsync();
-            }
             Assert.True(response.IsSuccessStatusCode, "Expected 200");
         }
 
