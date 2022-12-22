@@ -1,6 +1,6 @@
 namespace Wivuu.AspNetCore.APIKeyTests;
 
-public class DataProtectedAPIKeyGeneratorTests : BaseTests
+public class SampleAPITests : BaseTests
 {
     [Fact]
     public async Task TestGenerateKeyAndUseKey()
@@ -13,6 +13,16 @@ public class DataProtectedAPIKeyGeneratorTests : BaseTests
             // Act
             newKey = await HttpClient.GetStringAsync(
                 $"/Sample/GetNewKey?userId={userId}&validMinutes=1");
+
+            // Assert
+            Assert.NotNull(newKey);
+            Assert.NotEqual(userId.ToString(), newKey);
+        }
+
+        {
+            // Act
+            newKey = await HttpClient.GetStringAsync(
+                $"/Sample/GetNewKey?userId={userId}");
 
             // Assert
             Assert.NotNull(newKey);
@@ -36,6 +46,16 @@ public class DataProtectedAPIKeyGeneratorTests : BaseTests
 
             // Assert
             Assert.True(response.IsSuccessStatusCode, "Expected 200");
+        }
+
+        for (var i = 0; i < 10; ++i)
+        {
+            // Act
+            HttpClient.DefaultRequestHeaders.Authorization = new ("Bearer", "BogusKey");
+            var response = await HttpClient.GetAsync("/Sample");
+
+            // Assert
+            Assert.False(response.IsSuccessStatusCode, "Expected NOT 200");
         }
     }
 }
