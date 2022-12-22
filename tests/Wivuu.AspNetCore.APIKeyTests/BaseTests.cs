@@ -26,6 +26,8 @@ public abstract class BaseTests : IDisposable
 
     public virtual void Dispose()
     {
+        GC.SuppressFinalize(this);
+
         HttpClient.Dispose();
         Application.Dispose();
     }
