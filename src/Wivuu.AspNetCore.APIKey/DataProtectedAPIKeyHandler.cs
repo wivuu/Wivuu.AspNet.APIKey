@@ -74,7 +74,6 @@ public class DataProtectedAPIKeyHandler<TDataProtectionKey> : AuthenticationHand
             else
                 return Task.FromResult(AuthenticateResult.Fail("Invalid key"));
         }
-
     }
 
     // Unprotect the token and retrieve underlying structured key
