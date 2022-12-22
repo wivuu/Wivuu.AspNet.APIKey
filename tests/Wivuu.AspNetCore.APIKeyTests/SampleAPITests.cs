@@ -19,6 +19,16 @@ public class SampleAPITests : BaseTests
             Assert.NotEqual(userId.ToString(), newKey);
         }
 
+        {
+            // Act
+            newKey = await HttpClient.GetStringAsync(
+                $"/Sample/GetNewKey?userId={userId}");
+
+            // Assert
+            Assert.NotNull(newKey);
+            Assert.NotEqual(userId.ToString(), newKey);
+        }
+
         for (var i = 0; i < 10; ++i)
         {
             // Act
@@ -37,7 +47,6 @@ public class SampleAPITests : BaseTests
             // Assert
             Assert.True(response.IsSuccessStatusCode, "Expected 200");
         }
-        
 
         for (var i = 0; i < 10; ++i)
         {
@@ -46,7 +55,7 @@ public class SampleAPITests : BaseTests
             var response = await HttpClient.GetAsync("/Sample");
 
             // Assert
-            Assert.True(response.IsSuccessStatusCode, "Expected 200");
+            Assert.False(response.IsSuccessStatusCode, "Expected NOT 200");
         }
     }
 }
