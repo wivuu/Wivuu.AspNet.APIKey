@@ -1,6 +1,3 @@
-
-using Wivuu.AspNetCore.APIKey;
-
 namespace Wivuu.AspNetCore.APIKeyTests;
 
 public class DataProtectedAPIKeyGeneratorTests : BaseTests
