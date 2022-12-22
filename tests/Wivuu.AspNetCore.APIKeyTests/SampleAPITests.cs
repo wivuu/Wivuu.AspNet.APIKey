@@ -1,6 +1,6 @@
 namespace Wivuu.AspNetCore.APIKeyTests;
 
-public class DataProtectedAPIKeyGeneratorTests : BaseTests
+public class SampleAPITests : BaseTests
 {
     [Fact]
     public async Task TestGenerateKeyAndUseKey()
