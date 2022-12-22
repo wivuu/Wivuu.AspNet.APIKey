@@ -53,7 +53,7 @@ builder.Services.AddSingleton<DataProtectedAPIKeyGenerator>();
 
 builder.Services.AddLogging();
 builder.Services.AddOptions();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddControllersAsServices();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -102,3 +102,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+namespace Sample
+{
+    public partial class Program { }
+}

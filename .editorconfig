@@ -1,0 +1,27 @@
+csharp_using_directive_placement = inside_namespace:error
+csharp_using_directive_placement = outside_namespace:error
+csharp_style_implicit_object_creation_when_type_is_apparent = error
+
+# C# Coding preference
+[*.cs]
+dotnet_diagnostic.CA1000.severity = none # Declare static on on generic types
+dotnet_diagnostic.CA1707.severity = suggestion # Remove underscores from enum values
+dotnet_diagnostic.CA1848.severity = suggestion # Logger performance hint
+dotnet_diagnostic.CA1852.severity = suggestion # Must be sealed
+dotnet_diagnostic.CA1050.severity = none # Class inside of namespace
+dotnet_diagnostic.CA1715.severity = none # generic type names should be spelled correctly
+# TODO: dotnet 7 Analyzer issue: https://github.com/dotnet/aspnetcore/issues/41794
+dotnet_diagnostic.ASP0003.severity = none
+dotnet_diagnostic.ASP0004.severity = none
+dotnet_diagnostic.ASP0005.severity = none
+dotnet_diagnostic.ASP0006.severity = none
+dotnet_diagnostic.IDE0052.severity = error # Remove unused private member
+dotnet_diagnostic.IDE0060.severity = suggestion # Remove unused private member
+
+# dotnet_analyzer_diagnostic.category-Style.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = none # Use implicit type
+dotnet_diagnostic.IDE0007.severity = warning # Use implicit type
+dotnet_diagnostic.IDE0011.severity = none # Add braces
+# dotnet_diagnostic.IDE0055.severity = error # Formatting
+# dotnet_analyzer_diagnostic.category_performance.severity = error
+dotnet_diagnostic.IDE0047.severity = suggestion # Remove parentheses
