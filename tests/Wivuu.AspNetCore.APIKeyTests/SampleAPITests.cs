@@ -37,5 +37,16 @@ public class SampleAPITests : BaseTests
             // Assert
             Assert.True(response.IsSuccessStatusCode, "Expected 200");
         }
+        
+
+        for (var i = 0; i < 10; ++i)
+        {
+            // Act
+            HttpClient.DefaultRequestHeaders.Authorization = new ("Bearer", "BogusKey");
+            var response = await HttpClient.GetAsync("/Sample");
+
+            // Assert
+            Assert.True(response.IsSuccessStatusCode, "Expected 200");
+        }
     }
 }
