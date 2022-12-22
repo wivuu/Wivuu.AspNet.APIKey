@@ -7,6 +7,11 @@ public class DataProtectedAPIKeyOptions<TDataProtectionKey> : AuthenticationSche
     where TDataProtectionKey : IDataProtectedKey
 {
     /// <summary>
+    /// Scheme used
+    /// </summary>
+    public string Scheme { get; set; } = "x-api-key";
+
+    /// <summary>
     /// Provides isolated purpose between different usages using the same key
     /// </summary>
     public string UsagePurpose { get; set; } = "x-api-key";

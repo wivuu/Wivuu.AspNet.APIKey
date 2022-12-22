@@ -112,9 +112,9 @@ public class DataProtectedAPIKeyHandler<TDataProtectionKey> : AuthenticationHand
         if (Options.BuildAuthenticationResponseAsync is not null)
             return Options.BuildAuthenticationResponseAsync(Context.RequestServices, key);
 
-        var identity = new ClaimsIdentity("x-api-key");
-
-        var defaultTicket = new AuthenticationTicket(new ClaimsPrincipal(identity), "x-api-key");
+        var identity = new ClaimsIdentity(Options.Scheme, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+        var principal = new ClaimsPrincipal(identity);
+        var defaultTicket = new AuthenticationTicket(principal, Options.Scheme);
 
         return Task.FromResult(AuthenticateResult.Success(defaultTicket));
     }

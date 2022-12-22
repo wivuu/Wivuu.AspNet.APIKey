@@ -10,7 +10,7 @@ namespace Sample.Controllers;
 public class SampleController : ControllerBase
 {
     [HttpGet(Name = "Test API Key")]
-    [Authorize(AuthenticationSchemes = "x-api-key")]
+    [Authorize]
     public IActionResult Get()
     {
         var user = Request.HttpContext.User;
