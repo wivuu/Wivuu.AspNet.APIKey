@@ -3,14 +3,7 @@
 This project implements a secure API key authentication & authorization system built atop .NET's Data Protection APIs.
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=wivuu_Wivuu.AspNetCore.APIKey&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=wivuu_Wivuu.AspNetCore.APIKey)
-
-## Roadmap
-- [x] Update sample to support Swagger doc authentication
-- [x] Add option mechanism for extracting API key differently from request
-- [x] Add tests
-- [x] Add Sonarcloud CI actions
-- [x] Document usage scenarios
-- [ ] Add CD to nuget
+![Nuget](https://img.shields.io/nuget/v/Wivuu.AspNetCore.APIKey)
 
 ## Usage
 
