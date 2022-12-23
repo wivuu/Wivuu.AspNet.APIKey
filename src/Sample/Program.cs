@@ -49,8 +49,6 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddSingleton<DataProtectedAPIKeyGenerator>();
-
 builder.Services.AddLogging();
 builder.Services.AddOptions();
 builder.Services.AddControllers().AddControllersAsServices();

@@ -17,10 +17,12 @@ public static class DataProtectedAPIKeyExtensions
     public static AuthenticationBuilder AddWivuuDataProtectedAPIKeySchema<TDataProtectionKey>(
         this AuthenticationBuilder builder, 
         string authenticationScheme,
-        Action<DataProtectedAPIKeyOptions<TDataProtectionKey>> configureOptions,
+        Action<DataProtectedAPIKeyOptions<TDataProtectionKey>>? configureOptions = null,
         string? displayName = null)
         where TDataProtectionKey : IDataProtectedKey
     {
+        builder.Services.AddSingleton<DataProtectedAPIKeyGenerator>();
+
         return builder.AddScheme<
             DataProtectedAPIKeyOptions<TDataProtectionKey>, 
             DataProtectedAPIKeyHandler<TDataProtectionKey>
