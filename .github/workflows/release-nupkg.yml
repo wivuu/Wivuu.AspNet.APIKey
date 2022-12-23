@@ -1,0 +1,23 @@
+name: Release Nupkg
+
+# On release published
+on:
+  release:
+    types:
+      - published
+
+jobs:
+
+  # Fetch and re-use artifacts
+  release_nuget:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '7.0.101'
+    - run: dotnet test
+    - name: Publish nupkg
+      shell: pwsh
+      run: |
+        ./build.ps1 -NugetKey ${{ secrets.NUGET_KEY }} -Publish
